@@ -27,12 +27,19 @@ var app = new Vue({
       currentTheme: 'default',
       themeOption: [
         { label: 'default', value: 'default', author: 'Lyric'},
+        { label: 'peter', value: 'peter', author: 'Peter Rong'},
         { label: 'lupeng', value: 'lupeng', author: '鲁鹏'}
       ],
       styleThemes: {
         default: defaultTheme,
+        peter: peterTheme,
         lupeng: lupengTheme
       },
+      currentReference: 'default',
+      referenceOption: [
+        { label: 'default', value: 'default' },
+        { label: 'IEEE', value: 'IEEE'},
+      ],
       aboutDialogVisible: false
     }
   },
@@ -52,7 +59,8 @@ var app = new Vue({
     this.wxRenderer = new WxRenderer({
       theme: this.styleThemes.default,
       fonts: this.currentFont,
-      size: this.currentSize
+      size: this.currentSize,
+      reference: this.currentReference,
     })
     axios({
       method: 'get',
@@ -89,6 +97,12 @@ var app = new Vue({
       var themeObject = this.styleThemes[themeName];
       this.wxRenderer.setOptions({
         theme: themeObject
+      })
+      this.refresh()
+    },
+    referenceChanged: function(referenceName){
+      this.wxRenderer.setOptions({
+        reference: referenceName
       })
       this.refresh()
     },

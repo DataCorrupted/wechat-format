@@ -57,13 +57,18 @@ var WxRenderer = function (opts) {
   }
 
   this.buildFootnotes = function () {
+    reference = this.opts.reference
     var footnoteArray = footnotes.map(function (x) {
-      if (x[1] === x[2]) {
-        return '<code style="font-size: 90%; opacity: 0.6;">[' + x[0] + ']</code>: <i>'  + x[1] +'</i><br/>'
+      if (reference === 'default') {
+        if (x[1] === x[2]) {
+          return '<code style="font-size: 90%; opacity: 0.6;">[' + x[0] + ']</code>: <i>'  + x[2] +'</i><br/>'
+        }
+        return '<code style="font-size: 90%; opacity: 0.6;">[' + x[0] + ']</code> ' + x[1] + ': <i>'  + x[2] +'</i><br/>'
+      } else if (reference === 'IEEE') {
+        return '<code style="font-size: 90%">[' + x[0] + ']</code>: <span style="color: #666666">'  + x[2] +'</span><br/>'
       }
-      return '<code style="font-size: 90%; opacity: 0.6;">[' + x[0] + ']</code> ' + x[1] + ': <i>'  + x[2] +'</i><br/>'
     })
-    return '<h3 ' + S('h3') + '>References</h3><p ' + S('footnotes') + '>'  + footnoteArray.join('\n') + '</p>'
+    return '<h2 ' + S('h2') + '>References</h2><p ' + S('footnotes') + '>'  + footnoteArray.join('\n') + '</p>'
   }
 
   this.setOptions = function (newOpts) {
@@ -83,11 +88,14 @@ var WxRenderer = function (opts) {
     FuriganaMD.register(renderer);
   
     renderer.heading = function (text, level) {
-      if (level < 3) {
-        return '<h2 ' + S('h2') + '>' + text + '</h2>'
-      } else {
-        return '<h3 ' + S('h3') + '>' + text + '</h3>'
+      if (level == 1) {
+        return '<h1 ' + S('h1') + '>' + text + '</h1>'
       }
+      if (level == 2) {
+        return '<h2 ' + S('h2') + '>' + text + '</h2>'
+      } 
+      // By default return h3
+      return '<h3 ' + S('h3') + '>' + text + '</h3>'
     }
     renderer.paragraph = function (text) {
       return '<p ' + S('p') + '>' + text + '</p>'

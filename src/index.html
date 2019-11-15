@@ -58,6 +58,14 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="Reference">
+            <el-select v-model="currentReference" size="mini" placeholder="选择引用格式" @change="referenceChanged">
+              <el-option v-for="reference in referenceOption" :key="reference.value" :label="reference.label" :value="reference.value">
+                <span style="float: left">{{ reference.label }}</span>
+              </el-option>
+            </el-select>
+          </el-form-item>
+
         </el-form>
         <el-button class="about" @click="aboutDialogVisible = true">关于</el-button>
       </el-header>
@@ -115,6 +123,7 @@
   <script src="codemirror/mode/markdown/markdown.js"></script>
 
   <script src="assets/scripts/themes/default.js"></script>
+  <script src="assets/scripts/themes/peter.js"></script>
   <script src="assets/scripts/themes/lupeng.js"></script>
   <script src="assets/scripts/renderers/wx-renderer.js"></script>
   <script src="assets/scripts/editor.js"></script>
